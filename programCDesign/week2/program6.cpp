@@ -23,7 +23,7 @@
  * 输出第m天，得流感的人数
  * 样例输入
  *   5
-....#
+...#
 .#.@.
 .#@..
 #....
@@ -94,7 +94,7 @@ int setPatient(char d[100][100], int n)
 {
     int newD[100][2] = {0};
     int count = 0;//病人的数量
-    int newCount = 0;// 新增病人的数量
+    int newCount = 0;// 当前病人后面传染的病人的数量
     for(int i = 0; i < n; i++)
     {
         for(int j = 0; j < n; j++)
@@ -108,9 +108,6 @@ int setPatient(char d[100][100], int n)
                     if(d[i-1][j] == '.')//传染上方的人
                     {
                         d[i-1][j] = '@';
-                        newD[newCount][0] = i - 1;
-                        newD[newCount][1] = j;
-                        newCount++;
                         count++;
                     }
                 }
@@ -120,9 +117,6 @@ int setPatient(char d[100][100], int n)
                     if(d[i][j-1] == '.')// 传染左测的人
                     {
                         d[i][j-1] = '@';
-                        newD[newCount][0] = i;
-                        newD[newCount][1] = j - 1;
-                        newCount++;
                         count++;
                     }
                 }
