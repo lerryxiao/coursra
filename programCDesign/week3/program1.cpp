@@ -29,18 +29,25 @@
 #include <iostream>
 using namespace std;
 
-void charPrint(char s[501],int index);
+void charPrint(char s[],int index);
 
 int main()
 {
     char s[501];
-    cin.getline(s, 500);
+    int i = 0;
+    char c;
+    while((c = getchar()) != '\n')
+    {
+        s[i] = c;
+        i++;
+    }
+    s[i] = '\0';
     charPrint(s, 0);
     cout << endl;
     return 0;
 }
 
-void charPrint(char s[501], int index)
+void charPrint(char s[], int index)
 {
     if (s[index] != '\0')
     {

@@ -51,13 +51,22 @@ int main()
         }
         s[index] = '\0';
         cout << s << endl;
+
         while(s[m] != '(')
         {
-            s[m] = ' ';
+            if (s[m] != ')'){
+                s[m] = ' ';
+            }
+            m++;
         }
 
-        while(m != -1){
+        while(m != -1)
+        {
             m = match(s,m);
+            if(s[m] == ')')
+            {
+                m++;
+            }
         }
 
         // parse
@@ -114,7 +123,7 @@ int match(char s[], int start){
         }
          if (s[start] == ')')
          {
-            return start
+             return start;
          }else{
              return match(s, start);
          }
