@@ -30,7 +30,7 @@ $$
  */
 
 #include <iostream>
-#include <string>
+#include <string.h>
 #include <stdio.h>
 using namespace std;
 
@@ -45,12 +45,7 @@ int main()
     char c;
     while( true )
     {
-        while((c = cin.get()) != '\n')
-        {
-            s[index] = c;
-            index++;
-        }
-        s[index] = '\0';
+	cin.getline(s, 101);
         cout << s << endl;
 
         while(s[m] != '(')
@@ -71,7 +66,7 @@ int main()
         }
 
         // parse
-        for(int i = 0; i < index; i++)
+        for(int i = 0; i < strlen(s); i++)
         {
             switch (s[i]) {
             case '(': {
