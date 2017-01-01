@@ -23,30 +23,46 @@
  *
  *   hello    world.
  * 样例输出
- * .dlrow olleh
+ * olleh .dlrow 
  */
 
 #include <iostream>
+#include <string>
 using namespace std;
 
-void charPrint(char s[],int index);
+int charPrint(char s[],int index);
 
 int main()
 {
     char s[501];
     int i = 0;
     cin.getline(s, 500);
-    charPrint(s, 0);
+    while(i != -1)
+    {
+	i = charPrint(s,i);
+	if(i != -1){
+	    cout << ' ';
+	    i++;
+	}
+    }
     cout << endl;
     return 0;
 }
 
-void charPrint(char s[], int index)
+int charPrint(char s[], int index)
 {
     if (s[index] != '\0')
     {
-        charPrint(s,++index);
-        cout << s[--index];
+	if(s[index] == ' ')
+	{
+	    return index;
+	}else{
+	    int i =  charPrint(s, ++index);
+	    cout << s[--index];
+	    return i;
+	}
+    }else{
+	return -1;
     }
 }
 
