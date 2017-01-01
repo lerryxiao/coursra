@@ -39,11 +39,11 @@ int main()
     cin.getline(s, 500);
     while(i != -1)
     {
-	i = charPrint(s,i);
-	if(i != -1){
-	    cout << ' ';
-	    i++;
-	}
+        i = charPrint(s,i);
+        if(i != -1){
+            cout << ' ';
+            i++;
+        }
     }
     cout << endl;
     return 0;
@@ -53,16 +53,16 @@ int charPrint(char s[], int index)
 {
     if (s[index] != '\0')
     {
-	if(s[index] == ' ')
-	{
-	    return index;
-	}else{
-	    int i =  charPrint(s, ++index);
-	    cout << s[--index];
-	    return i;
-	}
+        if(s[index] == ' ')
+        {
+            return index;
+        }else{
+            int i =  charPrint(s, ++index);
+            cout << s[--index];
+            return i;
+        }
     }else{
-	return -1;
+        return -1;
     }
 }
 
