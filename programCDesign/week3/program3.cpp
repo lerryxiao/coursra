@@ -32,6 +32,7 @@
 
 #include <iostream>
 #include <string>
+#include <stdio.h>
 using namespace std;
 
 int order(char s[100],int start,int index);
