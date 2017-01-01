@@ -27,6 +27,7 @@
  */
 
 #include <iostream>
+#include <stdio.h>
 using namespace std;
 
 void charPrint(char s[],int index);
