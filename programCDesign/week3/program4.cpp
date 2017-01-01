@@ -30,8 +30,6 @@ $$
  */
 
 #include <iostream>
-#include <string.h>
-#include <stdio.h>
 using namespace std;
 
 
@@ -40,28 +38,31 @@ int match(char s[], int start);
 int main()
 {
     char s[101];
-    int index = 0;
     int m= 0;
-    char c;
+
     while( true )
     {
-	cin.getline(s, 101);
+        cin.getline(s, 101);
         cout << s << endl;
 
-        while(s[m] != '(')
-        {
-            if (s[m] != ')'){
-                s[m] = ' ';
-            }
-            m++;
-        }
 
-        while(m != -1)
+        if(strlen(s) > 0)
         {
-            m = match(s,m);
-            if(s[m] == ')')
+            while(s[m] != '(')
             {
+                if (s[m] != ')'){
+                    s[m] = ' ';
+                }
                 m++;
+            }
+
+            while(m != -1)
+            {
+                m = match(s,m);
+                if(s[m] == ')')
+                {
+                    m++;
+                }
             }
         }
 
@@ -81,7 +82,6 @@ int main()
             }
         }
         cout << s << endl;
-        index = 0;
         m = 0;
     }
     return 0;
@@ -96,10 +96,6 @@ int match(char s[], int start){
     if(s[start] == '(')
     {
         int n;
-        while(s[start] != '\0' && s[start] != '(' && s[start] != ')'){
-            s[start] = ' ';
-            start++;
-        }
         n = match(s, start+1);
         if(s[n] != '\0' && s[n] == ')')
         {
@@ -112,16 +108,18 @@ int match(char s[], int start){
             return match(s, n);
         }
     }
-    else{
-         while(s[start] != '\0' && s[start] != '(' && s[start] != ')'){
+    else
+    {
+        while(s[start] != '\0' && s[start] != '(' && s[start] != ')')
+        {
             s[start] = ' ';
             start++;
         }
-         if (s[start] == ')')
-         {
-             return start;
-         }else{
-             return match(s, start);
-         }
+        if (s[start] == ')')
+        {
+            return start;
+        }else{
+            return match(s, start);
+        }
     }
 }
