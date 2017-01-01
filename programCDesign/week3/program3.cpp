@@ -31,29 +31,24 @@
  */
 
 #include <iostream>
-#include <string>
+#include <string.h>
 #include <stdio.h>
 using namespace std;
 
-int order(char s[100],int start,int index);
+int order(char s[],int start,int index);
 
 int main()
 {
     char children[101];
     int index = 0;
-    while((children[index] = cin.get()) != '\n')
-    {
-        index++;
-    }
-    children[index] = '\0';
-    index = 0;
+    cin.getline(children, 100);
     while(index != -1){
         index = order(children, index, index+1);
     }
     return 0;
 }
 
-int order(char s[101], int start, int index)
+int order(char s[], int start, int index)
 {
     if(start >= strlen(s) || s[start] == '\0')
     {
