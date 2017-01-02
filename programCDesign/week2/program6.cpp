@@ -21,19 +21,31 @@
  * 输出
  *
  * 输出第m天，得流感的人数
+ * 样例输入
+ *   5
+...#
+.#.@.
+.#@..
+#....
+.....
+ *   4
+ * 样例输出
+ * 1 16
  */
 #include <iostream>
 using namespace std;
 
-void setPatient(char d[100][100],int n);
+
 bool checkThisDay(int newD[100][2], int i, int j, int n);
+int setPatient(char d[100][100],int n);
 
 int main()
 {
-    int n;
-    char d[100][100];
-    int m;
+    int n = 0;
+    char d[100][100] = {'.'};
+    int m = 0;
     int count = 0;
+    int maxCount = 0;
 
     cin >> n;
     for(int i = 0; i < n; i++)
@@ -41,33 +53,29 @@ int main()
         for(int j = 0; j < n; j++)
         {
             cin >> d[i][j];
-        }
-    }
-    for(int i = 0; i < n; i++)
-    {
-        for(int j = 0; j < n; j++)
-        {
-            cout << d[i][j];
-        }
-        cout << endl;
-    }
-    cin >> m;
-
-    for(int i = 1; i < m; i++)
-    {
-        setPatient(d, n);
-    }
-
-    for(int i = 0; i < n; i++)
-    {
-        for(int j = 0; j < n; j++)
-        {
-            if(d[i][j] == '@'){
+            if(d[i][j] != '#')
+            {
+                maxCount++;
+            }
+            if (d[i][j] == '@')
+            {
                 count++;
             }
         }
     }
+    cin >> m;
+    // 计算病人
+    for(int i = 1; i < m; i++)
+    {
+        count = setPatient(d, n);
+        if (count == maxCount)
+        {
+            break;
+        }
+    }
+
     cout << count << endl;
+    return 0;
 }
 
 bool checkThisDay(int newD[100][2], int i, int j, int n)
@@ -82,60 +90,62 @@ bool checkThisDay(int newD[100][2], int i, int j, int n)
     return false;
 }
 
-void setPatient(char d[100][100], int n)
+int setPatient(char d[100][100], int n)
 {
     int newD[100][2] = {0};
-    int count = 0;
+    int count = 0;//病人的数量
+    int newCount = 0;// 当前病人后面传染的病人的数量
     for(int i = 0; i < n; i++)
     {
         for(int j = 0; j < n; j++)
         {
-            if(d[i][j] == '@')
+            if(d[i][j] == '@' && !checkThisDay(newD, i, j, newCount))// 房间住着病人，且不是今天新增的
             {
-                if(i > 1)
+                count++;
+
+                if(i > 0)
                 {
-                    if(d[i-1][j] != '#' && d[i-1][j] != '@' && !checkThisDay(newD, i-1, j, count))
+                    if(d[i-1][j] == '.')//传染上方的人
                     {
                         d[i-1][j] = '@';
-                        newD[count][0] = i;
-                        newD[count][1] = j;
                         count++;
                     }
                 }
 
-                if(j > 1)
+                if(j > 0)
                 {
-                    if(d[i][j-1] != '#' && d[i][j-1] != '@' && !checkThisDay(newD, i, j-1, count))
+                    if(d[i][j-1] == '.')// 传染左测的人
                     {
                         d[i][j-1] = '@';
-                        newD[count][0] = i;
-                        newD[count][1] = j;
                         count++;
                     }
                 }
 
-                if(i+1 < n)
+                if((i+1) < n)
                 {
-                    if(d[i+1][j] != '#' && d[i+1][j] != '@' && !checkThisDay(newD, i+1, j, count))
+                    if(d[(i+1)][j] == '.') // 传染下方的人
                     {
-                        d[i+1][j] = '@';
-                        newD[count][0] = i;
-                        newD[count][1] = j;
+                        d[(i+1)][j] = '@';
+                        newD[newCount][0] = i + 1;
+                        newD[newCount][1] = j;
+                        newCount++;
                         count++;
                     }
                 }
 
-                if(j+1 < n)
+                if((j+1) < n)
                 {
-                    if(d[i][j+1] != '#' && d[i][j+1] != '@' && !checkThisDay(newD, i, j+1, count))
+                    if(d[i][(j+1)] == '.') // 传染右测的人
                     {
-                        d[i][j+1] = '@';
-                        newD[count][0] = i;
-                        newD[count][1] = j;
+                        d[i][(j+1)] = '@';
+                        newD[newCount][0] = i;
+                        newD[newCount][1] = j + 1;
+                        newCount++;
                         count++;
                     }
                 }
             }
         }
     }
+    return count;
 }
