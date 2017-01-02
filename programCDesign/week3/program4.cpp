@@ -30,6 +30,7 @@ $$
  */
 
 #include <iostream>
+#include <stdio.h>
 #include <string.h>
 using namespace std;
 
@@ -41,27 +42,20 @@ int main()
     char s[101];
     int m= 0;
 
-    while( true )
+   while( scanf("%s", s) != EOF )
     {
-        cin.getline(s, 101);
         cout << s << endl;
 
 
         if(strlen(s) > 0)
         {
-            while(s[m] != '(')
-            {
-                if (s[m] != ')'){
-                    s[m] = ' ';
-                }
-                m++;
-            }
 
-            while(m != -1)
+            while(m != -1 )
             {
                 m = match(s,m);
                 if(s[m] == ')')
                 {
+                    s[m] = '?';
                     m++;
                 }
             }
@@ -83,14 +77,16 @@ int main()
             }
         }
         cout << s << endl;
-        m = 0;
+       m = 0;
     }
     return 0;
 }
 
 
-int match(char s[], int start){
-    if(s[start] == '\0' || strlen(s) == start){
+int match(char s[], int start)
+{
+    if(s[start] == '\0' || strlen(s) == start)
+    {
         return -1;
     }
 
@@ -116,6 +112,7 @@ int match(char s[], int start){
             s[start] = ' ';
             start++;
         }
+
         if (s[start] == ')')
         {
             return start;
