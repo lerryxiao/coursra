@@ -3,6 +3,17 @@
 ** 定义
    struct struct_name
    
+   e.g 
+   #+BEGIN_SRC C++
+       struct student
+       {
+           int id_num;
+           char name[10];
+       }
+       
+       student s1  ;
+   #+END_SRC
+   
    struct_name 代表一种类型，类似于 int float 等类型
 ** 结构体之间的赋值
    值的 copy，赋值完成后的修改不会相互影响。
@@ -28,7 +39,7 @@
    值传递，不会修改原结构体变量
 
    e.g 
-   # +BEGIN_SRC C++
+   #+BEGIN_SRC C++
     #include <iostream>
     using namespace std;
 
@@ -56,6 +67,7 @@
         cout << mike.id_num << " " << mike.name << endl;
         return 0;
     }
-   #+END
+   
+   #+END_SRC
 
 ** 结构体变量做函数的返回值
