@@ -23,7 +23,7 @@
  * 输出第m天，得流感的人数
  * 样例输入
  *   5
-...#
+...#.
 .#.@.
 .#@..
 #....
@@ -32,17 +32,37 @@
  *
  * 样例输出
  * 1 16
+ *
+ * test case 1
+ * first day
+ 7
+.......
+.#@..@#
+...@...
+#......
+.......
+.@.#.#.
+.....@.
+2
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+| 1 | . | . | @ | . | . | @ | . |
+| 2 | . | # | @ | @ | @ | @ | # |
+| 3 | . | . | @ | @ | @ | @ | . |
+| 4 | # | . | . | @ | . | . | . |
+| 5 | . | @ | . | . | . | . | . |
+| 6 | @ | @ | @ | # | . | # | . |
+| 7 | . | @ | . | . | @ | @ | @ |
  */
 #include <iostream>
 using namespace std;
 
 int n;
+int d[101][101] = {0};
 // 设置第 day+1 天的病人，并返回所有得流感病人的数量
-int setPatient(int d[100][100], int day);
+int setPatient(int day);
 
 int main()
 {
-    int d[100][100] = {0};
     int count;
     int m = 0;
     char c;
@@ -76,7 +96,8 @@ int main()
     // 计算病人
     for(int i = 1; i < m; i++)
     {
-        count = count + setPatient(d, i);
+        count = count + setPatient(i);
+        //count 与最大可患病的人数相同了就不再循环了
         if (count == maxCount)
         {
             break;
@@ -88,9 +109,9 @@ int main()
 }
 
 
-int setPatient(int d[100][100],  int day)
+int setPatient( int day )
 {
-    int count = 0;//病人的数量
+    int count = 0;//第 day+1 天被传染的病人的数量
 
     for(int i = 0; i < n; i++)
     {
