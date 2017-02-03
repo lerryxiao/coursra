@@ -53,17 +53,19 @@
 | 6 | @ | @ | @ | # | . | # | . |
 | 7 | . | @ | . | . | @ | @ | @ |
  */
+
 #include <iostream>
+#include <stdio.h>
 using namespace std;
 
 int n;
-int d[101][101] = {0};
-// 设置第 day+1 天的病人，并返回所有得流感病人的数量
+int d[100][100] = {0};
+// 设置第 day+1 天的病人，并返回当天被传染的病人数量
 int setPatient(int day);
 
 int main()
 {
-    int count;
+    int total = 0;
     int m = 0;
     char c;
     int maxCount = 0; // 最多可以有多少病人
@@ -85,7 +87,7 @@ int main()
                 break;
             case '@': // 第一天感冒的人
                 d[i][j] = 1;
-                count++;
+                total++;
                 maxCount++;
                 break;
             }
@@ -96,15 +98,15 @@ int main()
     // 计算病人
     for(int i = 1; i < m; i++)
     {
-        count = count + setPatient(i);
-        //count 与最大可患病的人数相同了就不再循环了
-        if (count == maxCount)
+        total = total + setPatient(i);
+        //total 与最大可患病的人数相同了就不再循环了
+        if (total == maxCount)
         {
             break;
         }
     }
 
-    cout << count << endl;
+    cout << total << endl;
     return 0;
 }
 
@@ -117,7 +119,7 @@ int setPatient( int day )
     {
         for(int j = 0; j < n; j++)
         {
-            if( d[i][j] == day)
+            if(d[i][j] == day)
             {
 
                 if( j-1 >= 0 && d[i][j-1] == 0 ) // left
