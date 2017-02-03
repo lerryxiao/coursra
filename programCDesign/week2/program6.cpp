@@ -23,126 +23,127 @@
  * 输出第m天，得流感的人数
  * 样例输入
  *   5
-...#
+...#.
 .#.@.
 .#@..
 #....
 .....
  *   4
+ *
  * 样例输出
  * 1 16
+ *
+ * test case 1
+ * first day
+ 7
+.......
+.#@..@#
+...@...
+#......
+.......
+.@.#.#.
+.....@.
+2
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+| 1 | . | . | @ | . | . | @ | . |
+| 2 | . | # | @ | @ | @ | @ | # |
+| 3 | . | . | @ | @ | @ | @ | . |
+| 4 | # | . | . | @ | . | . | . |
+| 5 | . | @ | . | . | . | . | . |
+| 6 | @ | @ | @ | # | . | # | . |
+| 7 | . | @ | . | . | @ | @ | @ |
  */
+
 #include <iostream>
+#include <stdio.h>
 using namespace std;
 
-
-bool checkThisDay(int newD[100][2], int i, int j, int n);
-int setPatient(char d[100][100],int n);
+int n;
+int d[100][100] = {0};
+// 设置第 day+1 天的病人，并返回当天被传染的病人数量
+int setPatient(int day);
 
 int main()
 {
-    int n = 0;
-    char d[100][100] = {'.'};
+    int total = 0;
     int m = 0;
-    int count = 0;
-    int maxCount = 0;
+    char c;
+    int maxCount = 0; // 最多可以有多少病人
 
     cin >> n;
     for(int i = 0; i < n; i++)
     {
         for(int j = 0; j < n; j++)
         {
-            cin >> d[i][j];
-            if(d[i][j] != '#')
-            {
+            cin >> c;
+            switch (c) {
+            case '.': {
+                d[i][j] = 0; // 可以被传染
                 maxCount++;
+                break;
             }
-            if (d[i][j] == '@')
-            {
-                count++;
+            case '#':
+                d[i][j] = -1;
+                break;
+            case '@': // 第一天感冒的人
+                d[i][j] = 1;
+                total++;
+                maxCount++;
+                break;
             }
         }
     }
     cin >> m;
+
     // 计算病人
     for(int i = 1; i < m; i++)
     {
-        count = setPatient(d, n);
-        if (count == maxCount)
+        total = total + setPatient(i);
+        //total 与最大可患病的人数相同了就不再循环了
+        if (total == maxCount)
         {
             break;
         }
     }
 
-    cout << count << endl;
+    cout << total << endl;
     return 0;
 }
 
-bool checkThisDay(int newD[100][2], int i, int j, int n)
-{
-    for(int k=0; k < n; k++)
-    {
-        if (newD[k][0] == i && newD[k][1] == j)
-        {
-            return true;
-        }
-    }
-    return false;
-}
 
-int setPatient(char d[100][100], int n)
+int setPatient( int day )
 {
-    int newD[100][2] = {0};
-    int count = 0;//病人的数量
-    int newCount = 0;// 当前病人后面传染的病人的数量
+    int count = 0;//第 day+1 天被传染的病人的数量
+
     for(int i = 0; i < n; i++)
     {
         for(int j = 0; j < n; j++)
         {
-            if(d[i][j] == '@' && !checkThisDay(newD, i, j, newCount))// 房间住着病人，且不是今天新增的
+            if(d[i][j] == day)
             {
-                count++;
 
-                if(i > 0)
+                if( j-1 >= 0 && d[i][j-1] == 0 ) // left
                 {
-                    if(d[i-1][j] == '.')//传染上方的人
-                    {
-                        d[i-1][j] = '@';
-                        count++;
-                    }
+                    d[i][j-1] = day+1;
+                    count++;
                 }
 
-                if(j > 0)
+                if( i - 1 >= 0 && d[i-1][j] == 0 ) // above
                 {
-                    if(d[i][j-1] == '.')// 传染左测的人
-                    {
-                        d[i][j-1] = '@';
-                        count++;
-                    }
+                    d[i-1][j] = day +1;
+                    count++;
                 }
 
-                if((i+1) < n)
+                if( j+1 < n && d[i][j+1] == 0 ) // right
                 {
-                    if(d[(i+1)][j] == '.') // 传染下方的人
-                    {
-                        d[(i+1)][j] = '@';
-                        newD[newCount][0] = i + 1;
-                        newD[newCount][1] = j;
-                        newCount++;
-                        count++;
-                    }
+                    d[i][j+1] = day + 1;
+                    count++;
                 }
 
-                if((j+1) < n)
+                if( i+1 < n && d[i+1][j] == 0 ) // below
                 {
-                    if(d[i][(j+1)] == '.') // 传染右测的人
-                    {
-                        d[i][(j+1)] = '@';
-                        newD[newCount][0] = i;
-                        newD[newCount][1] = j + 1;
-                        newCount++;
-                        count++;
-                    }
+                    d[i+1][j] = day + 1;
+                    count++;
                 }
             }
         }
