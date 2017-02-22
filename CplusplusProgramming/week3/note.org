@@ -1,0 +1,366 @@
+#+TITLE: C++ 程序设计第三周课程笔记
+
+* 内联成员函数和重载函数
+** 内联成员函数
+   定义方式有2中：
+   1. inline + 成员函数
+   2. 整个函数体出现在类定义的内部
+      #+BEGIN_SRC C++
+      class A
+      {
+          inline void func1(); // 1
+          void func2()
+          {
+          }
+      }
+      #+END_SRC
+
+** 重载函数及参数缺省
+   #+BEGIN_SRC C++
+   #include <iosteam>
+   using namespace std;
+   class Location
+   {
+       private:
+           int x, y;
+       
+       public:
+           void init(int x = 0; int y = 0); // 缺省参数
+           
+           // 函数重载，名字相同，参数不同
+           void valueX(int val)
+           {
+               x = val;
+           }
+           int valueX()
+           {
+               return x;
+           }
+   }
+   #+END_SRC
+
+* 构造函数
+** 定义
+   成员函数的一种，与类名同名，可以有参数，但不能有返回值。
+   
+   作业是进行对象的初始化。
+
+   如果定义类时没有写构造函数，编译器会生成一个默认无参数的构造函数，该构造函数不做任何操作。
+   
+   这篇博客中介绍的比较好，可以参考：http://www.cnblogs.com/xkfz007/archive/2012/05/11/2496447.html
+** 注意事项  
+    1.  一旦定义了构造函数，编译器就不在生成默认的无参构造函数
+    2. 对象一旦创建了就不能在去执行构造函数
+    3. 指针对象类型可以不初始化，就不会调用构造函数。
+       #+BEGIN_SRC C++
+       class A {};
+       A *p[3] = {new A}
+       #+END_SRC
+       上面的代码，只创建了一个对象。
+
+* 复制构造函数
+** 定义
+   1. 只有一个参数,即对同类对象的引用
+   2. 如果没有定义复制构造函数，那么编译器生成默认构造函数。
+   
+   e.g:
+   #+BEGIN_SRC C++
+   class Complex
+   {
+       double real, image;
+   };
+   Complex c1;        //调用缺省的无参构造函数。
+   Complex c2(c1);    //调用缺省的复制构造函数，将 c2  初始化成和 c1 一样。
+   #+END_SRC
+** 作用的场景
+   1. 当用一个对象去初始化同类的另一个对象时
+   #+BEGIN_SRC C++
+   class Complex
+   {};
+   
+   Complex c1;
+
+   Complex c2(c1);
+   Complex c3 = c1
+   #+END_SRC
+   
+   2. 如果某函数有一个参数是类 A 的对象，那么该函数被调用时， 类 A 的复制构造函数将被调用。
+   #+BEGIN_SRC C++
+       class A
+       {
+            public:
+                A(){};
+               
+               A(A &a)
+               {
+                   cout << "Copy constructor called" << endl;
+               }
+       };
+       
+       void Func(A a1){}
+       int main()
+       {
+            A a2;
+            Func(a2);
+            return 0;
+       }
+    #+END_SRC
+       
+      上面代码执行时，A 的复制构造函数将会被调用，输出
+
+       #+BEGIN_SRC 
+       Copy constructor called
+       #+END_SRC
+       
+    3.  如果函数的返回值是类 A 的对象时，则函数返回时，A 的复制构造函数被调用。
+
+        #+BEGIN_SRC 
+        A Func()
+        {
+            A b(4);
+            return b;
+        }
+        #+END_SRC
+
+* 类型转换构造函数
+** 定义
+    实现类型的自动转换；只有一个参数，不是复制构造函数，编译器自动调用
+
+* 析构函数
+** 定义
+    析构函数是成员函数的一种，与类名相同，前面加"~", 没有参数和返回值，一个类最多只有一个析构函数。不写时，编译器自动生成一个。
+** 使用
+    1.对象消亡时自动调用，可以用来释放占用的内容。
+   
+    e.g:
+    #+BEGIN_SRC C++
+    #include <iostream>
+    using namespace std;
+    class CTest
+    {
+        public:
+            ~CTest()
+            {
+                cout << "destructor called" << endl; 
+            }
+    };
+
+    int main()
+    {
+        CTest arr[2];
+        cout << "END" << endl;
+
+        return 0;
+    }
+    #+END_SRC
+    
+    结果：
+    #+BEGIN_SRC 
+    END
+    destructor called
+    destructor called
+    #+END_SRC
+    
+    2. delete 运算导致析构函数调用
+       
+       #+BEGIN_SRC 
+       class A{};
+       A *a = new A;
+       delete a;
+       A *arr = new A[2];
+       delete []arr; // 数组必须加[]
+       #+END_SRC
+ 
+* 静态成员函数和静态成员变量
+** 静态成员变量
+    静态成员：前面加了 static 关键字的成员。
+    #+BEGIN_SRC C++
+    class CRectangle
+    {
+        private:
+            int w,h;
+            static int nTotalArea; //静态成员变量
+            static int nTotalNumber;
+        public:
+            CRectangle(int w, int h);
+            ~CREctangle();
+            static void printTotal();
+    };
+    #+END_SRC
+    
+    区别：
+    
+    1. 普通变量没有实例对象各自一个，static 共一份，为所有对象共享。
+    2. sizeof 不会计算 static 成员。
+    3. 普通成员函数作用域某一对象，静态成员函数并不具体作用于某一具体的对象。
+    4. 静态成员不需要通过对象就可以方位
+
+    访问静态成员：
+    1. 类名::成员名
+       #+BEGIN_SRC C++
+       CRectangle::printTotal();
+       cout << CRectangle::nTotalArea << endl;
+       #+END_SRC
+    2.  对象名.成员名
+        #+BEGIN_SRC C++
+        CRectangle r;
+        r.nTotalprintTotal();
+        cout << r.nTotalArea << endl;
+        #+END_SRC
+    3. 指针 ->  成员名：
+       #+BEGIN_SRC C++
+        CRectangle *p = &r;
+        p -> nTotalprintTotal();
+        cout << p -> nTotalArea << endl;
+       #+END_SRC
+    4. 引用.成员名:
+       #+BEGIN_SRC C++
+       CRectangle &ref = r;
+       ref.nTotalprintTotal();
+       cout << ref.nTotalArea << endl;
+       #+END_SRC
+
+   静态成员变量是全局变量。静态成员函数是全局函数，不需要通过对象就可以使用。
+   
+   在静态成员函数中，不能访问非静态成员变量，也不能调用非静态成员函数。
+
+* 成员对象和封闭类
+** 概念
+  一个类的成员是另一个类的对象为封闭类
+  
+  e.g
+  #+BEGIN_SRC C++
+  class A{};
+  class B{
+     A a;
+  }
+  #+END_SRC
+** 调用顺序
+   1. 当封闭类对象生产时
+      * Step1: 执行所有成员对象的构造函数
+      * Stpe2: 执行封闭类的构造函数。
+   2. 成员对象的构造函数调用顺序
+      * Step1: 和成员对象在类中的说明顺序一致。
+      * Step2: 与在成员初始化列表中出现的顺序无关。
+   3. 当封闭类的对象消亡时，
+      * Step1: 先执行封闭类的析构函数
+      * Step2:  执行成员对象的析构函数
+   4. 析构函数顺序和构造函数顺序相反。
+* 友元
+** 友元函数
+   1. 一个类的友元函数可以访问该类的私有成员。
+   2. 将一个类的成员函数（包括构造、析构函数）声明为另一类的友元。
+** 友元类
+   #+BEGIN_SRC C++
+   class CCar
+   {
+        private:
+            int private;
+      
+        firend class CDriver;
+   }
+
+   class CDrive
+   {
+        public:
+           CCar car;
+        
+          firend void printf()
+          {
+                cout << car.price << endl;
+          }
+   }
+   #+END_SRC
+
+* this 指针
+   指向成员函数作用的对象。
+  
+   this 不能用于静态成员函数
+
+* 常量对象
+   定义对象时在前面加 const 那么该对象是常量对象。该对象的值不能被改变。
+   #+BEGIN_SRC C++
+   class Demo
+   {
+       private :
+            int value;
+       public:
+           void SetValue();
+           
+   }
+
+   int main()
+   {
+        const Demo d;
+        o.value = 100; //error, 不能修改
+        o.setValue(); //error 常量对象不能调用非常量成员函数。
+   }
+   #+END_SRC
+
+* 常量成员函数
+** 定义
+   在类的成员函数后面可以加 const 关键字， 则该成员函数成为常量成员函数。
+** 使用规则
+   常量成员函数执行期间不应该修改其作用的对象。因此，在常量成员函数中不能修改成员变量的值（静态成员变量除外）, 也不能调用同类的非常量成员函数（静态成员函数除外）.
+   #+BEGIN_SRC C++
+   class Sample
+   {
+       public :
+           int value;
+           void GetValue() const;
+           void func(){};
+           Sample(){}
+   }
+
+   void Sample::GetValue() const
+   {
+       value = 0; //wrong，不修改成员变量
+       func()// wrong，不能调用成员函数。
+   }
+   
+   int main()
+   {
+       const Sample o;
+       o.value = 100// error 
+       o.func(); // error,  常量对象不能访问非常量成员函数
+       o.GetValue() //ok
+       return 0;
+   }
+   #+END_SRC
+   
+   两个成员函数，名字和参数表都一样，但一个是 const， 一个不是，算重载。
+   #+BEGIN_SRC C++
+   class CTest
+   {
+       private:
+           int n;
+       public:
+           CTest()
+           {
+               n = 1;
+           }
+           int GetValue() const 
+           {
+               return n;
+           }
+
+           int GetValue()
+           {
+               return n;
+  
+   }
+   #+END_SRC
+  
+* 常引用
+** 定义
+    应用前面加 const 关键字，成为常引用。不能通过常引用修改其引用的变量。
+** 使用方法
+   使用对象的引用作为参数是，且不能修改对象的值
+   #+BEGIN_SRC C++
+   class Sample
+   {
+        
+   };
+   void Pritf(const Sampe & a)
+   {}
+   #+END_SRC
