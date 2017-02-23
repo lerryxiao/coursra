@@ -4,7 +4,10 @@ using namespace std;
 class A {
 public:
     int val;
-    A(){};
+    // add code at here
+    A(){
+        val = 0;
+    }
 
     A(int n)
     {
@@ -14,7 +17,7 @@ public:
     A & GetObj(){
         return *this;
     }
-};
+  };
 
 int main()  {
     A a;

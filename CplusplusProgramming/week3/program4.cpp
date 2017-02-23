@@ -115,6 +115,8 @@ private:
     int step;
     int order;
     int color;
+    void redMake(int time);
+    void blueMake(int time);
 public:
     Warrior dragon, ninja, iceman, lion, wolf;
     bool isStrength;
@@ -153,12 +155,12 @@ HeaderQuarter::HeaderQuarter(const HeaderQuarter &h) {
     iceman = h.iceman;
     lion = h.lion;
     wolf = h.wolf;
+    step = 0;
+    order = 1;
     isStrength = true;
 }
 
 int HeaderQuarter::makeWarriors(int time) {
-    //红方司令部按照iceman、lion、wolf、ninja、dragon的顺序循环制造武士。
-    //蓝方司令部按照lion、dragon、ninja、iceman、wolf的顺序循环制造武士。
     if (strength < dragon.strength
         && strength < lion.strength
         && strength < ninja.strength
@@ -172,124 +174,136 @@ int HeaderQuarter::makeWarriors(int time) {
     }
     switch (color) {
         case 1://red
-            switch (step) {
-                case 0:// iceman
-                    if (!make(&iceman, time))
-                    {
-                        step++;
-                        makeWarriors(time);
-                    }
-                    else
-                    {
-                        step++;
-                    }
-                    break;
-                case 1://lion
-                    if (!make(&lion, time))
-                    {
-                        step++;
-                        makeWarriors(time);
-                    }
-                    else
-                    {
-                        step++;
-                    }
-                    break;
-                case 2://wolf
-                    if (!make(&wolf, time))
-                    {
-                        step++;
-                        makeWarriors(time);
-                    }
-                    else
-                    {
-                        step++;
-                    }
-                    break;
-                case 3://ninjia
-                    if (!make(&ninja, time))
-                    {
-                        step++;
-                        makeWarriors(time);
-                    }
-                    else
-                    {
-                        step++;
-                    }
-                    break;
-                case 4://dragon
-                    if (!make(&dragon, time))
-                    {
-                        step = 0;
-                        makeWarriors(time);
-                    }
-                    else
-                    {
-                        step = 0;
-                    }
-                    break;
-            }
+            redMake(time);
             break;
         case 2://blue
-            switch (step) {
-                case 0:
-                    if (!make(&lion, time))
-                    {
-                        step++;
-                        makeWarriors(time);
-                    }
-                    else
-                    {
-                        step++;
-                    }
-                    break;
-                case 1:
-                    if (!make(&dragon, time))
-                    {
-                        step++;
-                        makeWarriors(time);
-                    }
-                    else
-                    {
-                        step++;
-                    }
-                    break;
-                case 2:
-                    if (!make(&ninja, time))
-                    {
-                        step++;
-                        makeWarriors(time);
-                    }
-                    else
-                    {
-                        step++;
-                    }
-                    break;
-                case 3:
-                    if (!make(&iceman, time))
-                    {
-                        step++;
-                        makeWarriors(time);
-                    }
-                    else
-                    {
-                        step++;
-                    }
-                    break;
-                case 4:
-                    if (!make(&wolf, time))
-                    {
-                        step = 0;
-                        makeWarriors(time);
-                    }
-                    else {
-                        step = 0;
-                    }
-                    break;
-            }
-
+            blueMake(time);
+            break;
     }
     return 1;
+}
+
+//红方司令部按照iceman、lion、wolf、ninja、dragon的顺序循环制造武士。
+void HeaderQuarter::redMake(int time)
+{
+    switch (step) {
+        case 0:// iceman
+            if (!make(&iceman, time))
+            {
+                step++;
+                makeWarriors(time);
+            }
+            else
+            {
+                step++;
+            }
+            break;
+        case 1://lion
+            if (!make(&lion, time))
+            {
+                step++;
+                makeWarriors(time);
+            }
+            else
+            {
+                step++;
+            }
+            break;
+        case 2://wolf
+            if (!make(&wolf, time))
+            {
+                step++;
+                makeWarriors(time);
+            }
+            else
+            {
+                step++;
+            }
+            break;
+        case 3://ninjia
+            if (!make(&ninja, time))
+            {
+                step++;
+                makeWarriors(time);
+            }
+            else
+            {
+                step++;
+            }
+            break;
+        case 4://dragon
+            if (!make(&dragon, time))
+            {
+                step = 0;
+                makeWarriors(time);
+            }
+            else
+            {
+                step = 0;
+            }
+            break;
+    }
+}
+
+//蓝方司令部按照lion、dragon、ninja、iceman、wolf的顺序循环制造武士。
+void HeaderQuarter::blueMake(int time)
+{
+    switch (step) {
+        case 0:
+            if (!make(&lion, time))
+            {
+                step++;
+                makeWarriors(time);
+            }
+            else
+            {
+                step++;
+            }
+            break;
+        case 1:
+            if (!make(&dragon, time))
+            {
+                step++;
+                makeWarriors(time);
+            }
+            else
+            {
+                step++;
+            }
+            break;
+        case 2:
+            if (!make(&ninja, time))
+            {
+                step++;
+                makeWarriors(time);
+            }
+            else
+            {
+                step++;
+            }
+            break;
+        case 3:
+            if (!make(&iceman, time))
+            {
+                step++;
+                makeWarriors(time);
+            }
+            else
+            {
+                step++;
+            }
+            break;
+        case 4:
+            if (!make(&wolf, time))
+            {
+                step = 0;
+                makeWarriors(time);
+            }
+            else {
+                step = 0;
+            }
+            break;
+    }
 }
 
 bool HeaderQuarter::make(const Warrior *warrior,int time) {
@@ -365,7 +379,6 @@ int main() {
         red.wolf = Warrior("wolf", 5, wolf);
         HeaderQuarter blue(red);
         blue.setColor(2);
-        cout << red.colorName << "    " << blue.colorName << endl;
         // make worriors
         isStrength = true;
 
@@ -388,4 +401,3 @@ int main() {
     }
     return 0;
 }
-

@@ -1,3 +1,4 @@
+
 #include <iostream>
 using namespace std;
 
@@ -12,18 +13,12 @@ class Big  {
 public:
     int v;
     Base b;
-// 在此处补充你的代码
 
-    Big(int n){
-        v = n;
-        b = n;
-    }
+    // 在此处补充你的代码
+    Big(int n):v(n), b(n) { };
+    Big(Big &a):v(a.v), b(a.v) { };
 
-    Big(Big & bi)
-    {
-        v = bi.v;
-        b = bi.b;
-    }
+
 };
 int main()  {
     Big a1(5);

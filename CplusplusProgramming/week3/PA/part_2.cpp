@@ -4,12 +4,13 @@ class Sample{
 public:
     int v;
     Sample(int n):v(n) { }
+
 // 在此处补充你的代码
     Sample(Sample &s)
     {
-        v = s.v +5;
+        v = 2 * s.v;
     }
-};
+  };
 int main() {
     Sample a(5);
     Sample b = a;
