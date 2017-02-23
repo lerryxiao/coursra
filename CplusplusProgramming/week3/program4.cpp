@@ -126,6 +126,8 @@ public:
 
     HeaderQuarter(const HeaderQuarter &h);
 
+    void init();
+
     int makeWarriors(int time);
 
     bool make(const Warrior *warrior, int time);
@@ -135,43 +137,49 @@ public:
     void setColor(int);
 };
 
-
 HeaderQuarter::HeaderQuarter(int s) {
+    init();
     strength = s;
-    dragonCount = 0;
-    ninjiaCount = 0;
-    icemanCount = 0;
-    lionCount = 0;
-    wolfCount = 0; //武士的数量
-    step = 0;
-    order = 1;
-    isStrength = true;
 }
 
 HeaderQuarter::HeaderQuarter(const HeaderQuarter &h) {
+    init();
     strength = h.strength;
     dragon = h.dragon;
     ninja = h.ninja;
     iceman = h.iceman;
     lion = h.lion;
     wolf = h.wolf;
+}
+
+void HeaderQuarter::init()
+{
     step = 0;
     order = 1;
+    dragonCount = 0;
+    ninjiaCount = 0;
+    icemanCount = 0;
+    lionCount = 0;
+    wolfCount = 0;
     isStrength = true;
 }
 
 int HeaderQuarter::makeWarriors(int time) {
+
     if (strength < dragon.strength
         && strength < lion.strength
         && strength < ninja.strength
         && strength < iceman.strength
         && strength < dragon.strength)
     {
+
         isStrength = false;
         std::cout << std::setfill('0') << std::setw(3) << time << " ";
         std::cout << colorName << " headquarter stops making warriors" << std::endl;
+
         return 0;
     }
+
     switch (color) {
         case 1://red
             redMake(time);
@@ -180,6 +188,7 @@ int HeaderQuarter::makeWarriors(int time) {
             blueMake(time);
             break;
     }
+
     return 1;
 }
 
@@ -191,7 +200,7 @@ void HeaderQuarter::redMake(int time)
             if (!make(&iceman, time))
             {
                 step++;
-                makeWarriors(time);
+                redMake(time);
             }
             else
             {
@@ -202,7 +211,7 @@ void HeaderQuarter::redMake(int time)
             if (!make(&lion, time))
             {
                 step++;
-                makeWarriors(time);
+                redMake(time);
             }
             else
             {
@@ -213,7 +222,7 @@ void HeaderQuarter::redMake(int time)
             if (!make(&wolf, time))
             {
                 step++;
-                makeWarriors(time);
+                redMake(time);
             }
             else
             {
@@ -224,7 +233,7 @@ void HeaderQuarter::redMake(int time)
             if (!make(&ninja, time))
             {
                 step++;
-                makeWarriors(time);
+                redMake(time);
             }
             else
             {
@@ -235,7 +244,7 @@ void HeaderQuarter::redMake(int time)
             if (!make(&dragon, time))
             {
                 step = 0;
-                makeWarriors(time);
+                redMake(time);
             }
             else
             {
@@ -253,7 +262,7 @@ void HeaderQuarter::blueMake(int time)
             if (!make(&lion, time))
             {
                 step++;
-                makeWarriors(time);
+                blueMake(time);
             }
             else
             {
@@ -264,7 +273,7 @@ void HeaderQuarter::blueMake(int time)
             if (!make(&dragon, time))
             {
                 step++;
-                makeWarriors(time);
+                blueMake(time);
             }
             else
             {
@@ -275,7 +284,7 @@ void HeaderQuarter::blueMake(int time)
             if (!make(&ninja, time))
             {
                 step++;
-                makeWarriors(time);
+                blueMake(time);
             }
             else
             {
@@ -286,7 +295,7 @@ void HeaderQuarter::blueMake(int time)
             if (!make(&iceman, time))
             {
                 step++;
-                makeWarriors(time);
+                blueMake(time);
             }
             else
             {
@@ -297,7 +306,7 @@ void HeaderQuarter::blueMake(int time)
             if (!make(&wolf, time))
             {
                 step = 0;
-                makeWarriors(time);
+                blueMake(time);
             }
             else {
                 step = 0;
@@ -315,19 +324,19 @@ bool HeaderQuarter::make(const Warrior *warrior,int time) {
                 dragonCount++;
                 printfRecord(dragon, dragonCount, time);
                 break;
-            case 2:
+            case 2:// nijia
                 ninjiaCount++;
                 printfRecord(ninja, ninjiaCount, time);
                 break;
-            case 3:
+            case 3://iceman
                 icemanCount++;
                 printfRecord(iceman, icemanCount, time);
                 break;
-            case 4:
+            case 4://lion
                 lionCount++;
                 printfRecord(lion, lionCount, time);
                 break;
-            case 5:
+            case 5://wolf
                 wolfCount++;
                 printfRecord(wolf, wolfCount, time);
                 break;
@@ -396,7 +405,7 @@ int main() {
                 isStrength = false;
             }
             hour++;
-            hour = hour % 24;
+            //hour = hour % 24;
         }
     }
     return 0;
