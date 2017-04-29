@@ -1,0 +1,235 @@
+#+Title: C++程序设计第四周，运算符的重载
+
+* 运算符重载的基本概念
+** 概念
+  + 对已有的运算符赋予多重的含义
+  + 使同一运算符作用于不同类型的数据执行不同类型的行为。
+** 目的
+    扩展 C++  中提过的运算符的使用范围，以用于类所表示的抽象数据类型。
+** 特点
+   同一运算符，对不同类型的操作数，所发生的行为不同。
+
+**  使用
+    运算符重载的实质是函数重载
+    #+BEGIN_SRC 
+     返回类型 operator 运算符(形参表)
+     {
+     }
+    #+END_SRC
+** 程序编译时:
+   + 把含 运算符的表达式 转化为对运算符函数的调用
+   + 把运算符的操作数转化为运算符函数的参数
+   + 运算符被多次重载时，根据 实参的类型决定调用那个函数
+   + 运算符可以被重载为普通的函数
+   + 可以被重载为类的成员函数
+
+** 重载为普通函数    
+   #+BEGIN_SRC C++
+   class Complex
+   {
+       public:
+           Complex(double r = 0.0, double i = 0.0)
+           {
+               real = r;
+               imageinary = i;
+           }
+           double real;
+           double imageinary;
+   };
+
+   Complext operator+(const Complex & a, const Complex & b)
+   {
+        return Complex(a.real + b.real, a.imaginary + b.imaginary);
+   }
+   #+END_SRC
+    重载为普通函数时，参数个数为运算符目数。
+** 重载为成员函数
+    以上面的类为例：
+   #+BEGIN_SRC C++
+   class Complex
+   {
+       public:
+           Complex(double r = 0.0, double i = 0.0)
+           {
+               real = r;
+               imageinary = i;
+           }
+           double real;
+           double imageinary;
+           Complex operator+(const Complex &);
+           Complex operator-(const Complex &);
+   };
+   #+END_SRC
+    重载为成员函数时，参数个数为运算符目数减一
+
+* 赋值运算符的重载
+** 基本概念和实现
+  不同类型的类进行复制
+
+  只能重载为成员函数。
+  
+  #+BEGIN_SRC c++
+#include <iostream>
+#include <string>
+
+class String{
+private:
+    char * str;
+public:
+    String():str(NULL){}
+    const char * c_str()
+    {
+        return str;
+    }
+    char *operator=(const char *s);
+    ~String();
+};
+
+char * String::operator = (const char *s)
+{
+    if(str)
+    {
+        delete []str;
+    }
+
+    if(s)// s  不为 NULL 才会执行 copy
+    {
+        str = new char[strens] + ;
+        strcpy(str, s);
+    }
+    else
+    {
+        str = NULL;
+    }
+    return str;
+}
+
+String::~String()
+{
+    if(str)
+    {
+        delete [] str;
+    }
+}
+
+int main()
+{
+    String s;
+    s = "Good Luck";
+    cout << s.c_str() << endl;
+    //String s2 = "hello"; // 错误，给语句为初始化语句，不会调用赋值，并未实现初始化
+    return 0;
+}
+  #+END_SRC
+  
+**  浅复制和深复制
+***  浅复制/浅拷贝
+     +  执行逐个字节的复制工作
+        #+BEGIN_SRC C++ 
+        MyString s1, s2;
+        S1 = "this";
+        S2 = "that";
+        S1 = S2;
+        #+END_SRC
+      上面的代码执行的是浅拷贝，s1中的 str 和 s2 中的 str 指向了同一个指针，同一块内容空间。
+      
+     + 会导致内存泄漏，原对象中的字符串成为垃圾内存。
+
+*** 深复制/深拷贝
+    + 将一个对象中指针变量指向的内容复制到另一个对象中指针成员对象指向的内容
+      #+BEGIN_SRC C++
+      String & operator = (const String &s)
+      {
+         if(str == s.str) // 避免自身赋值给自身。
+         {
+             return *this;
+         }
+         if(str)
+         {
+             delete []str;
+         }
+         str = new char[strlen(s.str) + 1];
+         strcpy(str, s.str);
+         return * this;
+      }
+      #+END_SRC
+***  对 operator = 返回值类型的讨论
+    void 不好，例如 a = b = c 的情况。
+
+     返回引用
+
+    运算符重载时，好的风格 -- 尽量保留运算符原本的特性
+*** String 的完善
+    1. 为 String 类编写 复制构造函数 时
+   #+BEGIN_SRC C++
+   String::String(String &(s))
+    {
+      if(s.str)
+      {
+         str = new char[strlen(s) + 1];
+         strcpy(str, s);
+      }
+      else
+      {
+           return NULL;
+      }
+    }
+   #+END_SRC 
+
+* 运算符重载为友元函数
+** 重载为友元函数的情况：
+  + 成员函数不能满足使用要求
+  + 普通函数， 又不能访问类的私有成员
+   使用1.7 中 的重载成员函数的例子
+    #+BEGIN_SRC C++
+   class Complex
+   {
+       private:
+           double real;
+           double imageinary;
+       public:
+           Complex(double r = 0.0, double i = 0.0)
+           {
+               real = r;
+               imageinary = i;
+           }
+          
+           Complex operator+(const Complex &);
+           Complex operator-(const Complex &);
+   };
+    #+END_SRC
+
+     上面的例子中，如下的代码中
+    #+BEGIN_SRC C++
+    Complex c(1,1);
+    c = c + 5; //正常执行
+    c = 5 + c //不能执行了, 编译报错。
+    #+END_SRC
+
+    需定义2个参数的重载成员函数，也是在 Complex 中增加下面的成员函数；
+    #+BEGIN_SRC C++
+    Complex operator+(const Complex &a, const Complex &b)
+    {
+       return Complex(a.real +  b.real, a.imaginary + b.imaginary); 
+    }
+    #+END_SRC
+     但是由于 real 和 imaginary  为私有变量，所以需要将上面的方法声明为友元函数，
+    #+BEGIN_SRC C++
+    firend Complext operator + (const Complex &a, const Complex &b);
+    #+END_SRC
+
+* 实例-长度可变的整型数组类
+  + 定义长度及动态分配的内存
+  + 重载赋值运算符
+  + 重载 [] 运算符
+  + 实现 push_back 和 length 的成员函数
+  + 重载复制构造函数，实现深拷贝
+
+* 流插入运算符和流提取运算符的重载
+  cout 是在 iostream 中定义的 ostream. “<<” 在 iostream 中进行了重载
+* 自增/自减 运算符的重载
+   自增/自减运算符有前置/后置之分
+*** 强制类型运算符重载
+ #+BEGIN_SRC C++
+ operator int(return r)
+ #+END_SRC

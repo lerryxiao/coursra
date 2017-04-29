@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>C++ 程序设计第三周课程笔记</title>
+<!-- 2017-02-21 Tue 17:53 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="肖乐源" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">C++ 程序设计第三周课程笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 内联成员函数和重载函数</a>
+<ul>
+<li><a href="#sec-1-1">1.1. 内联成员函数</a></li>
+<li><a href="#sec-1-2">1.2. 重载函数及参数缺省</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2. 构造函数</a>
+<ul>
+<li><a href="#sec-2-1">2.1. 定义</a></li>
+<li><a href="#sec-2-2">2.2. 注意事项</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3. 复制构造函数</a>
+<ul>
+<li><a href="#sec-3-1">3.1. 定义</a></li>
+<li><a href="#sec-3-2">3.2. 作用的场景</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4. 类型转换构造函数</a>
+<ul>
+<li><a href="#sec-4-1">4.1. 定义</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5. 析构函数</a>
+<ul>
+<li><a href="#sec-5-1">5.1. 定义</a></li>
+<li><a href="#sec-5-2">5.2. 使用</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6. 静态成员函数和静态成员变量</a>
+<ul>
+<li><a href="#sec-6-1">6.1. 静态成员变量</a></li>
+</ul>
+</li>
+<li><a href="#sec-7">7. 成员对象和封闭类</a>
+<ul>
+<li><a href="#sec-7-1">7.1. 概念</a></li>
+<li><a href="#sec-7-2">7.2. 调用顺序</a></li>
+</ul>
+</li>
+<li><a href="#sec-8">8. 友元</a>
+<ul>
+<li><a href="#sec-8-1">8.1. 友元函数</a></li>
+<li><a href="#sec-8-2">8.2. 友元类</a></li>
+</ul>
+</li>
+<li><a href="#sec-9">9. this 指针</a></li>
+<li><a href="#sec-10">10. 常量对象</a></li>
+<li><a href="#sec-11">11. 常量成员函数</a>
+<ul>
+<li><a href="#sec-11-1">11.1. 定义</a></li>
+<li><a href="#sec-11-2">11.2. 使用规则</a></li>
+</ul>
+</li>
+<li><a href="#sec-12">12. 常引用</a>
+<ul>
+<li><a href="#sec-12-1">12.1. 定义</a></li>
+<li><a href="#sec-12-2">12.2. 使用方法</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 内联成员函数和重载函数</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 内联成员函数</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+定义方式有2中：
+</p>
+<ol class="org-ol">
+<li>inline + 成员函数
+</li>
+<li>整个函数体出现在类定义的内部
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">A</span>
+{
+    <span style="color: #66D9EF;">inline</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">func1</span>(); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">1</span>
+    <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">func2</span>()
+    {
+    }
+}
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 重载函数及参数缺省</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #A6E22E;">#include</span> <span style="color: #E6DB74;">&lt;iosteam&gt;</span>
+<span style="color: #66D9EF;">using</span> <span style="color: #66D9EF;">namespace</span> <span style="color: #AE81FF;">std</span>;
+<span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Location</span>
+{
+    <span style="color: #66D9EF;">private</span>:
+        <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">x</span>, <span style="color: #F92672;">y</span>;
+
+    <span style="color: #66D9EF;">public</span>:
+        <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">init</span>(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">x</span> = 0; <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">y</span> = 0); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#32570;&#30465;&#21442;&#25968;</span>
+
+        <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">&#20989;&#25968;&#37325;&#36733;&#65292;&#21517;&#23383;&#30456;&#21516;&#65292;&#21442;&#25968;&#19981;&#21516;</span>
+        <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">valueX</span>(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">val</span>)
+        {
+            x = val;
+        }
+        <span style="color: #66D9EF;">int</span> <span style="color: #F92672; font-style: italic;">valueX</span>()
+        {
+            <span style="color: #66D9EF;">return</span> x;
+        }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 构造函数</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 定义</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+成员函数的一种，与类名同名，可以有参数，但不能有返回值。
+</p>
+
+<p>
+作业是进行对象的初始化。
+</p>
+
+<p>
+如果定义类时没有写构造函数，编译器会生成一个默认无参数的构造函数，该构造函数不做任何操作。
+</p>
+
+<p>
+这篇博客中介绍的比较好，可以参考：<a href="http://www.cnblogs.com/xkfz007/archive/2012/05/11/2496447.html">http://www.cnblogs.com/xkfz007/archive/2012/05/11/2496447.html</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 注意事项</h3>
+<div class="outline-text-3" id="text-2-2">
+<ol class="org-ol">
+<li>一旦定义了构造函数，编译器就不在生成默认的无参构造函数
+</li>
+<li>对象一旦创建了就不能在去执行构造函数
+</li>
+<li>指针对象类型可以不初始化，就不会调用构造函数。
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">A</span> {};
+<span style="color: #66D9EF;">A</span> *<span style="color: #F92672;">p</span>[3] = {<span style="color: #66D9EF;">new</span> <span style="color: #66D9EF;">A</span>}
+</pre>
+</div>
+<p>
+上面的代码，只创建了一个对象。
+</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 复制构造函数</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 定义</h3>
+<div class="outline-text-3" id="text-3-1">
+<ol class="org-ol">
+<li>只有一个参数,即对同类对象的引用
+</li>
+<li>如果没有定义复制构造函数，那么编译器生成默认构造函数。
+</li>
+</ol>
+
+<p>
+e.g:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Complex</span>
+{
+    <span style="color: #66D9EF;">double</span> <span style="color: #F92672;">real</span>, <span style="color: #F92672;">image</span>;
+};
+<span style="color: #66D9EF;">Complex</span> <span style="color: #F92672;">c1</span>;        <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">&#35843;&#29992;&#32570;&#30465;&#30340;&#26080;&#21442;&#26500;&#36896;&#20989;&#25968;&#12290;</span>
+<span style="color: #66D9EF;">Complex</span> <span style="color: #F92672; font-style: italic;">c2</span>(c1);    <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">&#35843;&#29992;&#32570;&#30465;&#30340;&#22797;&#21046;&#26500;&#36896;&#20989;&#25968;&#65292;&#23558; c2  &#21021;&#22987;&#21270;&#25104;&#21644; c1 &#19968;&#26679;&#12290;</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> 作用的场景</h3>
+<div class="outline-text-3" id="text-3-2">
+<ol class="org-ol">
+<li>当用一个对象去初始化同类的另一个对象时
+</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Complex</span>
+{};
+
+<span style="color: #66D9EF;">Complex</span> <span style="color: #F92672;">c1</span>;
+
+<span style="color: #66D9EF;">Complex</span> <span style="color: #F92672; font-style: italic;">c2</span>(c1);
+<span style="color: #66D9EF;">Complex</span> <span style="color: #F92672;">c3</span> = c1
+</pre>
+</div>
+
+<ol class="org-ol">
+<li>如果某函数有一个参数是类 A 的对象，那么该函数被调用时， 类 A 的复制构造函数将被调用。
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">A</span>
+{
+     <span style="color: #66D9EF;">public</span>:
+         <span style="color: #F92672; font-style: italic;">A</span>(){};
+
+        <span style="color: #F92672; font-style: italic;">A</span>(<span style="color: #66D9EF;">A</span> &amp;<span style="color: #F92672;">a</span>)
+        {
+            cout &lt;&lt; <span style="color: #E6DB74;">"Copy constructor called"</span> &lt;&lt; endl;
+        }
+};
+
+<span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">Func</span>(<span style="color: #66D9EF;">A</span> <span style="color: #F92672;">a1</span>){}
+<span style="color: #66D9EF;">int</span> <span style="color: #F92672; font-style: italic;">main</span>()
+{
+     <span style="color: #66D9EF;">A</span> <span style="color: #F92672;">a2</span>;
+     Func(a2);
+     <span style="color: #66D9EF;">return</span> 0;
+}
+</pre>
+</div>
+
+<p>
+上面代码执行时，A 的复制构造函数将会被调用，输出
+</p>
+
+<pre class="example">
+Copy constructor called
+</pre>
+
+<ol class="org-ol">
+<li>如果函数的返回值是类 A 的对象时，则函数返回时，A 的复制构造函数被调用。
+
+<pre class="example">
+A Func()
+{
+    A b(4);
+    return b;
+}
+</pre>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 类型转换构造函数</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> 定义</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+实现类型的自动转换；只有一个参数，不是复制构造函数，编译器自动调用
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> 析构函数</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> 定义</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+析构函数是成员函数的一种，与类名相同，前面加"~", 没有参数和返回值，一个类最多只有一个析构函数。不写时，编译器自动生成一个。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> 使用</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+1.对象消亡时自动调用，可以用来释放占用的内容。
+</p>
+
+<p>
+e.g:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #A6E22E;">#include</span> <span style="color: #E6DB74;">&lt;iostream&gt;</span>
+<span style="color: #66D9EF;">using</span> <span style="color: #66D9EF;">namespace</span> <span style="color: #AE81FF;">std</span>;
+<span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">CTest</span>
+{
+    <span style="color: #66D9EF;">public</span>:
+        ~<span style="color: #F92672; font-style: italic;">CTest</span>()
+        {
+            cout &lt;&lt; <span style="color: #E6DB74;">"destructor called"</span> &lt;&lt; endl; 
+        }
+};
+
+<span style="color: #66D9EF;">int</span> <span style="color: #F92672; font-style: italic;">main</span>()
+{
+    <span style="color: #66D9EF;">CTest</span> <span style="color: #F92672;">arr</span>[2];
+    cout &lt;&lt; <span style="color: #E6DB74;">"END"</span> &lt;&lt; endl;
+
+    <span style="color: #66D9EF;">return</span> 0;
+}
+</pre>
+</div>
+
+<p>
+结果：
+</p>
+<pre class="example">
+END
+destructor called
+destructor called
+</pre>
+
+<ol class="org-ol">
+<li>delete 运算导致析构函数调用
+
+<pre class="example">
+class A{};
+A *a = new A;
+delete a;
+A *arr = new A[2];
+delete []arr; // 数组必须加[]
+</pre>
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> 静态成员函数和静态成员变量</h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> 静态成员变量</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+静态成员：前面加了 static 关键字的成员。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">CRectangle</span>
+{
+    <span style="color: #66D9EF;">private</span>:
+        <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">w</span>,<span style="color: #F92672;">h</span>;
+        <span style="color: #66D9EF;">static</span> <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">nTotalArea</span>; <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">&#38745;&#24577;&#25104;&#21592;&#21464;&#37327;</span>
+        <span style="color: #66D9EF;">static</span> <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">nTotalNumber</span>;
+    <span style="color: #66D9EF;">public</span>:
+        <span style="color: #F92672; font-style: italic;">CRectangle</span>(<span style="color: #66D9EF;">int</span> <span style="color: #F92672;">w</span>, <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">h</span>);
+        ~CREctangle();
+        <span style="color: #66D9EF;">static</span> <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">printTotal</span>();
+};
+</pre>
+</div>
+
+<p>
+区别：
+</p>
+
+<ol class="org-ol">
+<li>普通变量没有实例对象各自一个，static 共一份，为所有对象共享。
+</li>
+<li>sizeof 不会计算 static 成员。
+</li>
+<li>普通成员函数作用域某一对象，静态成员函数并不具体作用于某一具体的对象。
+</li>
+<li>静态成员不需要通过对象就可以方位
+</li>
+</ol>
+
+<p>
+访问静态成员：
+</p>
+<ol class="org-ol">
+<li>类名::成员名
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #AE81FF;">CRectangle</span>::printTotal();
+cout &lt;&lt; <span style="color: #AE81FF;">CRectangle</span>::nTotalArea &lt;&lt; endl;
+</pre>
+</div>
+</li>
+<li>对象名.成员名
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">CRectangle</span> <span style="color: #F92672;">r</span>;
+r.nTotalprintTotal();
+cout &lt;&lt; r.nTotalArea &lt;&lt; endl;
+</pre>
+</div>
+</li>
+<li>指针 -&gt;  成员名：
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">CRectangle</span> *<span style="color: #F92672;">p</span> = &amp;r;
+p -&gt; nTotalprintTotal();
+cout &lt;&lt; p -&gt; nTotalArea &lt;&lt; endl;
+</pre>
+</div>
+</li>
+<li>引用.成员名:
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">CRectangle</span> &amp;<span style="color: #F92672;">ref</span> = r;
+ref.nTotalprintTotal();
+cout &lt;&lt; ref.nTotalArea &lt;&lt; endl;
+</pre>
+</div>
+</li>
+</ol>
+
+<p>
+静态成员变量是全局变量。静态成员函数是全局函数，不需要通过对象就可以使用。
+</p>
+
+<p>
+在静态成员函数中，不能访问非静态成员变量，也不能调用非静态成员函数。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> 成员对象和封闭类</h2>
+<div class="outline-text-2" id="text-7">
+</div><div id="outline-container-sec-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="section-number-3">7.1</span> 概念</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+一个类的成员是另一个类的对象为封闭类
+</p>
+
+<p>
+e.g
+</p>
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">A</span>{};
+<span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">B</span>{
+   <span style="color: #66D9EF;">A</span> <span style="color: #F92672;">a</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-7-2" class="outline-3">
+<h3 id="sec-7-2"><span class="section-number-3">7.2</span> 调用顺序</h3>
+<div class="outline-text-3" id="text-7-2">
+<ol class="org-ol">
+<li>当封闭类对象生产时
+<ul class="org-ul">
+<li>Step1: 执行所有成员对象的构造函数
+</li>
+<li>Stpe2: 执行封闭类的构造函数。
+</li>
+</ul>
+</li>
+<li>成员对象的构造函数调用顺序
+<ul class="org-ul">
+<li>Step1: 和成员对象在类中的说明顺序一致。
+</li>
+<li>Step2: 与在成员初始化列表中出现的顺序无关。
+</li>
+</ul>
+</li>
+<li>当封闭类的对象消亡时，
+<ul class="org-ul">
+<li>Step1: 先执行封闭类的析构函数
+</li>
+<li>Step2:  执行成员对象的析构函数
+</li>
+</ul>
+</li>
+<li>析构函数顺序和构造函数顺序相反。
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> 友元</h2>
+<div class="outline-text-2" id="text-8">
+</div><div id="outline-container-sec-8-1" class="outline-3">
+<h3 id="sec-8-1"><span class="section-number-3">8.1</span> 友元函数</h3>
+<div class="outline-text-3" id="text-8-1">
+<ol class="org-ol">
+<li>一个类的友元函数可以访问该类的私有成员。
+</li>
+<li>将一个类的成员函数（包括构造、析构函数）声明为另一类的友元。
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-sec-8-2" class="outline-3">
+<h3 id="sec-8-2"><span class="section-number-3">8.2</span> 友元类</h3>
+<div class="outline-text-3" id="text-8-2">
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">CCar</span>
+{
+     <span style="color: #66D9EF;">private</span>:
+         <span style="color: #66D9EF;">int</span> <span style="color: #66D9EF;">private</span>;
+
+     firend <span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">CDriver</span>;
+}
+
+<span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">CDrive</span>
+{
+     <span style="color: #66D9EF;">public</span>:
+        <span style="color: #66D9EF;">CCar</span> <span style="color: #F92672;">car</span>;
+
+       firend <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">printf</span>()
+       {
+             cout &lt;&lt; car.price &lt;&lt; endl;
+       }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> this 指针</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+指向成员函数作用的对象。
+</p>
+
+<p>
+this 不能用于静态成员函数
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> 常量对象</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+定义对象时在前面加 const 那么该对象是常量对象。该对象的值不能被改变。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Demo</span>
+{
+    <span style="color: #66D9EF;">private</span> :
+         <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">value</span>;
+    <span style="color: #66D9EF;">public</span>:
+        <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">SetValue</span>();
+
+}
+
+<span style="color: #66D9EF;">int</span> <span style="color: #F92672; font-style: italic;">main</span>()
+{
+     <span style="color: #66D9EF;">const</span> <span style="color: #66D9EF;">Demo</span> <span style="color: #F92672;">d</span>;
+     o.value = 100; <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">error, &#19981;&#33021;&#20462;&#25913;</span>
+     o.setValue(); <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">error &#24120;&#37327;&#23545;&#35937;&#19981;&#33021;&#35843;&#29992;&#38750;&#24120;&#37327;&#25104;&#21592;&#20989;&#25968;&#12290;</span>
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><span class="section-number-2">11</span> 常量成员函数</h2>
+<div class="outline-text-2" id="text-11">
+</div><div id="outline-container-sec-11-1" class="outline-3">
+<h3 id="sec-11-1"><span class="section-number-3">11.1</span> 定义</h3>
+<div class="outline-text-3" id="text-11-1">
+<p>
+在类的成员函数后面可以加 const 关键字， 则该成员函数成为常量成员函数。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-11-2" class="outline-3">
+<h3 id="sec-11-2"><span class="section-number-3">11.2</span> 使用规则</h3>
+<div class="outline-text-3" id="text-11-2">
+<p>
+常量成员函数执行期间不应该修改其作用的对象。因此，在常量成员函数中不能修改成员变量的值（静态成员变量除外）, 也不能调用同类的非常量成员函数（静态成员函数除外）.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Sample</span>
+{
+    <span style="color: #66D9EF;">public</span> :
+        <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">value</span>;
+        <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">GetValue</span>() <span style="color: #66D9EF;">const</span>;
+        <span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">func</span>(){};
+        <span style="color: #F92672; font-style: italic;">Sample</span>(){}
+}
+
+<span style="color: #66D9EF;">void</span> <span style="color: #AE81FF;">Sample</span>::<span style="color: #F92672; font-style: italic;">GetValue</span>() <span style="color: #66D9EF;">const</span>
+{
+    value = 0; <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">wrong&#65292;&#19981;&#20462;&#25913;&#25104;&#21592;&#21464;&#37327;</span>
+    func()<span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">wrong&#65292;&#19981;&#33021;&#35843;&#29992;&#25104;&#21592;&#20989;&#25968;&#12290;</span>
+}
+
+<span style="color: #66D9EF;">int</span> <span style="color: #F92672; font-style: italic;">main</span>()
+{
+    <span style="color: #66D9EF;">const</span> <span style="color: #66D9EF;">Sample</span> <span style="color: #F92672;">o</span>;
+    o.value = 100<span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">error </span>
+    o.func(); <span style="color: #465457; font-style: italic;">// </span><span style="color: #465457; font-style: italic;">error,  &#24120;&#37327;&#23545;&#35937;&#19981;&#33021;&#35775;&#38382;&#38750;&#24120;&#37327;&#25104;&#21592;&#20989;&#25968;</span>
+    o.GetValue() <span style="color: #465457; font-style: italic;">//</span><span style="color: #465457; font-style: italic;">ok</span>
+    <span style="color: #66D9EF;">return</span> 0;
+}
+</pre>
+</div>
+
+<p>
+两个成员函数，名字和参数表都一样，但一个是 const， 一个不是，算重载。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">CTest</span>
+{
+    <span style="color: #66D9EF;">private</span>:
+        <span style="color: #66D9EF;">int</span> <span style="color: #F92672;">n</span>;
+    <span style="color: #66D9EF;">public</span>:
+        <span style="color: #F92672; font-style: italic;">CTest</span>()
+        {
+            n = 1;
+        }
+        <span style="color: #66D9EF;">int</span> <span style="color: #F92672; font-style: italic;">GetValue</span>() <span style="color: #66D9EF;">const</span> 
+        {
+            <span style="color: #66D9EF;">return</span> n;
+        }
+
+        <span style="color: #66D9EF;">int</span> <span style="color: #F92672; font-style: italic;">GetValue</span>()
+        {
+            <span style="color: #66D9EF;">return</span> n;
+
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12"><span class="section-number-2">12</span> 常引用</h2>
+<div class="outline-text-2" id="text-12">
+</div><div id="outline-container-sec-12-1" class="outline-3">
+<h3 id="sec-12-1"><span class="section-number-3">12.1</span> 定义</h3>
+<div class="outline-text-3" id="text-12-1">
+<p>
+应用前面加 const 关键字，成为常引用。不能通过常引用修改其引用的变量。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-12-2" class="outline-3">
+<h3 id="sec-12-2"><span class="section-number-3">12.2</span> 使用方法</h3>
+<div class="outline-text-3" id="text-12-2">
+<p>
+使用对象的引用作为参数是，且不能修改对象的值
+</p>
+<div class="org-src-container">
+
+<pre class="src src-C++"><span style="color: #66D9EF;">class</span> <span style="color: #66D9EF;">Sample</span>
+{
+
+};
+<span style="color: #66D9EF;">void</span> <span style="color: #F92672; font-style: italic;">Pritf</span>(<span style="color: #66D9EF;">const</span> <span style="color: #66D9EF;">Sampe</span> &amp; <span style="color: #F92672;">a</span>)
+{}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 肖乐源</p>
+<p class="date">Created: 2017-02-21 Tue 17:53</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
