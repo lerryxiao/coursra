@@ -51,7 +51,9 @@ using namespace std;
 
 class CBigInt
 {
+
 public:
+
     CBigInt();
 
     CBigInt(const int i);
@@ -59,26 +61,39 @@ public:
     CBigInt(const std::string &strValues);
 
     CBigInt(const CBigInt &bigInt); //复制构造函数
+
+    //析构函数
     ~CBigInt();
 
 public:
-    int compareBitInt(const CBigInt &rhs) const; //比较两个数的大小
+    int compareBigInt(const CBigInt &rhs) const; //比较两个数的大小
+
     CBigInt &operator=(const CBigInt &rhs); //赋值操作符重载
+
     friend std::ostream &operator<<(std::ostream &ou, const CBigInt &bigInt); //重载输出操作符
+
     friend std::istream &operator>>(std::istream &in, CBigInt &bigInt); //输入操作符的重载
+
     friend const CBigInt operator+(const CBigInt &lhs, const CBigInt &rhs); //加法操作重载
+
     friend const CBigInt operator-(const CBigInt &lhs, const CBigInt &rhs); //减法操作符重载
+
     friend const CBigInt operator*(const CBigInt &lhs, const CBigInt &rhs); //乘法操作符重载
+
     friend const CBigInt operator/(const CBigInt &lhs, const CBigInt &rhs); //除法操作重载
 
     void setValue(const std::string &strValues); //根据字符串设置数值
 
 private:
+
     std::string values; //保存所有位上的数字
+
 };
 
+//重载标准输入符
 std::ostream &operator<<(std::ostream &ou, const CBigInt &bigInt);
 
+//重载输出符
 std::istream &operator>>(std::istream &in, CBigInt &bigInt);
 
 const CBigInt operator+(const CBigInt &lhs, const CBigInt &rhs); //加法操作符重载
@@ -121,7 +136,7 @@ CBigInt::CBigInt(const CBigInt &bigInt) : values(bigInt.values)
 CBigInt::~CBigInt() {}
 
 
-int CBigInt::compareBitInt(const CBigInt &rhs) const
+int CBigInt::compareBigInt(const CBigInt &rhs) const
 {
     //同号情况，先比较绝对值，然后根据符号判断大小
     int ret = 0;
@@ -235,7 +250,7 @@ const CBigInt operator-(const CBigInt &lhs, const CBigInt &rhs)
     CBigInt absL = lhs;
     CBigInt absR = rhs;
     CBigInt ret;
-    int compFlag = absL.compareBitInt(absR);
+    int compFlag = absL.compareBigInt(absR);
     if (compFlag == 0)
     {
         ret.setValue("0");
@@ -291,6 +306,9 @@ const CBigInt operator-(const CBigInt &lhs, const CBigInt &rhs)
         return ret;
     }
     ret.values = string(ret.values.begin() + ret.values.find_first_not_of(" 0"), ret.values.end()); //去掉前面的空白和0
+    if (compFlag == -1){
+        ret.values = "-" + ret.values;
+    }
     return ret;
 }
 
@@ -298,8 +316,8 @@ const CBigInt operator-(const CBigInt &lhs, const CBigInt &rhs)
 const CBigInt operator*(const CBigInt &lhs, const CBigInt &rhs)
 {
     CBigInt ret;
-    int flag1 = lhs.compareBitInt(CBigInt(0));
-    int flag2 = rhs.compareBitInt(CBigInt(0));
+    int flag1 = lhs.compareBigInt(CBigInt(0));
+    int flag2 = rhs.compareBigInt(CBigInt(0));
     if (flag1 == 0 || flag2 == 0)
     {
         ret.setValue("0");
@@ -338,13 +356,13 @@ const CBigInt operator*(const CBigInt &lhs, const CBigInt &rhs)
 const CBigInt operator/(const CBigInt &lhs, const CBigInt &rhs)  //除法操作重载
 {
     CBigInt ret;
-    assert(rhs.compareBitInt(CBigInt(0)) != 0);
+    assert(rhs.compareBigInt(CBigInt(0)) != 0);
     ret.setValue("0"); //初始化为0
 
     CBigInt absL(lhs);
     CBigInt absR(rhs);
 
-    int comFlag = absL.compareBitInt(absR);
+    int comFlag = absL.compareBigInt(absR);
     if (comFlag < 0)
     {
         return ret;
@@ -364,7 +382,7 @@ const CBigInt operator/(const CBigInt &lhs, const CBigInt &rhs)  //除法操作�
         for (int i = 0; i < movCount; ++i) //tmp是10的movCount次方
             tmp = tmp * tenBigInt;
         int addNum = 0;
-        while (absL.compareBitInt(tmp) >= 0) {
+        while (absL.compareBigInt(tmp) >= 0) {
             absL = absL - tmp;
             addNum++;
         }
@@ -403,4 +421,3 @@ int main(int argc, char **argv)
     }
     return 0;
 }
-
