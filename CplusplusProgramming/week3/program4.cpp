@@ -376,7 +376,7 @@ int main() {
     bool isStrength;
     int dragon, ninja, iceman, lion, wolf;
     std::cin >> n;
-    for (int i = 0; i < n; i++) {
+   for (int i = 0; i < n; i++) {
         cin >> m;
         HeaderQuarter red(m);
         red.setColor(1);
