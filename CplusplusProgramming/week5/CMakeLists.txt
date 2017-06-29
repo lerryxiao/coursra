@@ -3,6 +3,7 @@ project(week5)
 
 set(CMAKE_CXX_STANDARD 98)
 
-set(SOURCE_FILES src/parta.cpp src/parta.h src/wow.cpp)
+#set(SOURCE_FILES  src/wow_copy.cpp)
+set(SOURCE_FILES  src/wow.cpp)
 
 add_executable(week5 ${SOURCE_FILES})
