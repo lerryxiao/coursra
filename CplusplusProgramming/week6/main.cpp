@@ -296,14 +296,107 @@ Its morale is 0.00001:10 blue lion 1 reached red headquarter with 10 elements an
  */
 #include <iostream>
 
+using namespace std;
+
+class City {
+
+};
+
 class Headquarter {
+public:
+	int strength;
+};
+
+
+
+class RedHeadquarter :
+	public Headquarter
+{
 
 };
 
+class BlueHeadquarter :
+	public Headquarter
+{
+
+};
+
+// 武士
 class Warrior {
+public:
+	int number;
+	int strength;
+	int aggressivity;
+
+	virtual void attack();
+};
+
+class Lion:
+	public Warrior
+{
+public:
+	int loyalty;
+};
+
+class Dragon :
+	public Warrior
+{
+public:
+	Weapon *weapon;
+};
+
+class Iceman :
+	public Warrior
+{
+public:
+	Weapon *weapon;
+};
+
+class Ninja :
+	public Warrior
+{
+public:
+	Weapon *weapon1;
+	Weapon *weapon2;
 
 };
 
+class Wolf :
+	public Warrior
+{
+
+};
+
+// 武器
+class Weapon 
+{
+public:
+	int number;
+	string name;
+
+};
+
+//sword, bomb,和arrow
+class Sword :
+	public Weapon
+{
+public:
+	int aggressivity;
+};
+
+class Bomb :
+	public Weapon
+{
+public:
+	int aggressivity;
+
+};
+
+class Arror :
+	public Weapon
+{
+
+};
 
 int main()
 {
