@@ -345,7 +345,6 @@ public:
     int strength;
     int aggressivity;
 
-    virtual void attack();
 };
 
 class Lion
@@ -397,13 +396,14 @@ class Weapon
 protected:
     int number;
     string name;
+    int aggressivity;
 
     Weapon(int x);
 };
 
 Weapon::Weapon(int x)
 {
-
+	aggressivity = x;
 }
 
 //sword, bomb,和arrow
@@ -411,16 +411,12 @@ class Sword
         :
                 public Weapon
 {
-public:
-    int aggressivity;
 };
 
 class Bomb
         :
                 public Weapon
 {
-public:
-    int aggressivity;
 
 };
 
@@ -433,6 +429,20 @@ class Arrow
 
 int main()
 {
-    std::cout << "Hello, World!" << std::endl;
+	int count;//测试数据的组数
+	int M, N, R, K, T; 
+	int dragonStr,ninjaStr,icemanStr,lionStr,wolfStr;
+	int  dragonAtk, ninjaAtk, icemanAtk, lionAtk, wolfAtk;
+	
+	std::cin >> count;
+	std::cin >> M >> N >> R >> K >> T;
+	std::cin >> dragonStr >> ninjaStr >> icemanStr >> lionStr >> wolfStr;
+	std::cin >> dragonAtk >> ninjaAtk >> icemanAtk >> lionAtk >> wolfAtk;
+	
+	std::cout << "Test int data" << std::endl;
+	std::cout << count << std::endl;
+	std::cout << M << "\t" << N << "\t" << R << "\t" << K << "\t" << T << std::endl;
+	std::cout << dragonStr << "\t" << ninjaStr << "\t" << icemanStr << "\t" << lionStr << "\t" << wolfStr << std::endl;
+	std::cout << dragonAtk << "\t" << ninjaAtk << "\t" << icemanAtk << "\t" << lionAtk << "\t" << wolfAtk << std::endl;
     return 0;
 }
