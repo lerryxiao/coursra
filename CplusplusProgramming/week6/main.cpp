@@ -13,9 +13,9 @@
 
 武士在刚降生的时候有一个初始的生命值，生命值在战斗中会发生变化，如果生命值减少到0（生命值变为负数时应当做变为0处理），则武士死亡（消失）。
 
-有的武士可以拥有武器。武器有三种，sword, bomb,和arrow，编号分别为0,1,2。
+有的武士可以拥有武器。武器有三种，sword, bomb,和arrow，编号分别为 0,1,2。
 
-武士降生后就朝对方司令部走，在经过的城市如果遇到敌人（同一时刻每个城市最多只可能有1个蓝武士和一个红武士），就会发生战斗。每次战斗只有一方
+武士降生后就朝对方司令部走，在经过的城市如果遇到敌人（同一时刻每个城市最多只可能有一个蓝武士和一个红武士），就会发生战斗。每次战斗只有一方
 发起主动进攻一次。被攻击者生命值会减去进攻者的攻击力值和进攻者手中sword的攻击力值。被进攻者若没死，就会发起反击，被反击者的生命值要减去反
 击者攻击力值的一半(去尾取整)和反击者手中sword的攻击力值。反击可能致敌人于死地。
 
@@ -295,105 +295,138 @@ Its morale is 0.00001:10 blue lion 1 reached red headquarter with 10 elements an
 002:10 red headquarter was taken
  */
 #include <iostream>
+#include <string>
 
 using namespace std;
 
-class City {
+const std::string WEAPON_NAME[3] = {"sword", "bomb", "arrow"};
 
-};
+const std::string WARRIOR_NAME[5] = {"iceman", "lion", "wolf", "ninja", "dragon"};
+const int READ_ORDER[5] = {0, 1, 2, 3, 4};
+//lion、dragon、ninja、iceman、wolf
+const int BLUE_ORDER[5] = {1, 4, 3, 0, 2};
 
-class Headquarter {
+class City
+{
+private:
+    int id;
+    int color;
+    int stength;
 public:
-	int strength;
+    Warrior *warriors[2];
+};
+
+class Headquarter
+{
+public:
+    int strength;
 };
 
 
-
-class RedHeadquarter :
-	public Headquarter
+class RedHeadquarter
+        :
+                public Headquarter
 {
 
 };
 
-class BlueHeadquarter :
-	public Headquarter
+class BlueHeadquarter
+        :
+                public Headquarter
 {
 
 };
 
 // 武士
-class Warrior {
-public:
-	int number;
-	int strength;
-	int aggressivity;
-
-	virtual void attack();
-};
-
-class Lion:
-	public Warrior
+class Warrior
 {
 public:
-	int loyalty;
+    int number;
+    int strength;
+    int aggressivity;
+
+    virtual void attack();
 };
 
-class Dragon :
-	public Warrior
+class Lion
+        :
+                public Warrior
 {
 public:
-	Weapon *weapon;
+    int loyalty;
 };
 
-class Iceman :
-	public Warrior
+class Dragon
+        :
+                public Warrior
 {
 public:
-	Weapon *weapon;
+    Weapon *weapon;
 };
 
-class Ninja :
-	public Warrior
+class Iceman
+        :
+                public Warrior
 {
 public:
-	Weapon *weapon1;
-	Weapon *weapon2;
+    Weapon *weapon;
+};
+
+class Ninja
+        :
+                public Warrior
+{
+public:
+    Weapon *weapon1;
+    Weapon *weapon2;
 
 };
 
-class Wolf :
-	public Warrior
+class Wolf
+        :
+                public Warrior
 {
+public:
+    Weapon *weapon;
 
 };
 
 // 武器
-class Weapon 
+class Weapon
 {
-public:
-	int number;
-	string name;
+protected:
+    int number;
+    string name;
 
+    Weapon(int x);
 };
+
+Weapon::Weapon(int x)
+{
+
+}
 
 //sword, bomb,和arrow
-class Sword :
-	public Weapon
+class Sword
+        :
+                public Weapon
 {
 public:
-	int aggressivity;
+    int aggressivity;
 };
 
-class Bomb :
-	public Weapon
+class Bomb
+        :
+                public Weapon
 {
 public:
-	int aggressivity;
+    int aggressivity;
 
 };
 
-class Arror :
-	public Weapon
+class Arrow
+        :
+                public Weapon
 {
 
 };
